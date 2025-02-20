@@ -1,104 +1,89 @@
-const Gig = require('../models/Gig');
+const Gig = require("../models/Gig");
+const { io } = require("../server");
 
-// Create a Gig
+// Create a gig
 const createGig = async (req, res) => {
-    console.log("Incoming Request Body:", req.body);
-    try {
-      const { title, description, price, location } = req.body;
-      const gig = new Gig({ title, description, price, location,createdBy: req.user._id });
-      await gig.save();
-      res.status(201).json(gig);
-    } catch (error) {
-      res.status(400).json({ error: error.message });
-    }
-  };
+  try {
+    const newGig = new Gig(req.body);
+    await newGig.save();
+    io.emit("newGig", newGig);
+    res.status(201).json({ success: true, gig: newGig });
+  } catch (error) {
+    console.error("Error creating gig:", error);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
 
-// Get All Gigs
+// Get all gigs
 const getAllGigs = async (req, res) => {
   try {
-    const gigs = await Gig.find().populate('createdBy', 'name email');
-    res.status(200).json(gigs);
+    const gigs = await Gig.find();
+    res.status(200).json({ success: true, gigs });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error("Error fetching gigs:", error);
+    res.status(500).json({ success: false, message: "Server error" });
   }
 };
 
-// Get a Gig by ID
+// Get a gig by ID
 const getGigById = async (req, res) => {
   try {
-    const { id } = req.params;
-    const gig = await Gig.findById(id).populate('createdBy', 'name email');
+    const gig = await Gig.findById(req.params.id);
     if (!gig) {
-      return res.status(404).json({ error: 'Gig not found' });
+      return res.status(404).json({ success: false, message: "Gig not found" });
     }
-    res.status(200).json(gig);
+    res.status(200).json({ success: true, gig });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error("Error fetching gig by ID:", error);
+    res.status(500).json({ success: false, message: "Server error" });
   }
 };
 
-
-
+// Update a gig
 const updateGig = async (req, res) => {
-    try {
-        const { id } = req.params;
-        console.log('Update Gig - ID:', id);
-        console.log('Update Gig - Body:', req.body);
-        
-        // First check if gig exists
-        const existingGig = await Gig.findById(id);
-        if (!existingGig) {
-            return res.status(404).json({ error: 'Gig not found' });
-        }
-
-        // Check if user owns the gig
-        if (existingGig.createdBy.toString() !== req.user._id.toString()) {
-            return res.status(403).json({ error: 'Not authorized to update this gig' });
-        }
-
-        const gig = await Gig.findByIdAndUpdate(
-            id,
-            req.body,
-            {
-                new: true,
-                runValidators: true,
-            }
-        );
-
-        console.log('Updated Gig:', gig);
-        res.status(200).json(gig);
-    } catch (error) {
-        console.error('Update Gig Error:', error);
-        res.status(500).json({ error: error.message });
+  try {
+    const gig = await Gig.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    if (!gig) {
+      return res.status(404).json({ success: false, message: "Gig not found" });
     }
+    io.emit("updateGig", gig);
+    res.status(200).json({ success: true, gig });
+  } catch (error) {
+    console.error("Error updating gig:", error);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
 };
 
-// Delete a Gig
+// Delete a gig
 const deleteGig = async (req, res) => {
   try {
-    const { id } = req.params;
-
-    const gig = await Gig.findByIdAndDelete(id);
-
+    const gig = await Gig.findByIdAndDelete(req.params.id);
     if (!gig) {
-      return res.status(404).json({ error: 'Gig not found' });
+      return res.status(404).json({ success: false, message: "Gig not found" });
     }
-
-    res.status(200).json({ message: 'Gig deleted successfully' });
+    io.emit("deleteGig", req.params.id);
+    res.status(200).json({ success: true, message: "Gig deleted" });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error("Error deleting gig:", error);
+    res.status(500).json({ success: false, message: "Server error" });
   }
 };
 
-// Get Gigs for Logged-In User
-const getUserGigs = async (req, res) => {
-    try {
-      const gigs = await Gig.find({ createdBy: req.user._id });
-      res.status(200).json(gigs);
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
-  };
+// Search gigs (New function added)
+const searchGigs = async (req, res) => {
+  try {
+    const { title, location } = req.query;
+    const query = {};
+    if (title) query.title = new RegExp(title, "i");
+    if (location) query.location = new RegExp(location, "i");
+
+    const gigs = await Gig.find(query);
+    res.status(200).json({ success: true, gigs });
+  } catch (error) {
+    console.error("Error searching gigs:", error);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
 
 module.exports = {
   createGig,
@@ -106,5 +91,5 @@ module.exports = {
   getGigById,
   updateGig,
   deleteGig,
-  getUserGigs,
+  searchGigs,
 };

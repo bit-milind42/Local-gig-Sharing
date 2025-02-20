@@ -20,11 +20,21 @@ const gigSchema = new mongoose.Schema({
   },
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User', // Assuming you have a User model
+    ref: 'User',
     required: true,
   },
+  gigType: {
+    type: String,
+    enum: ['Remote', 'On-site'],
+    required: true,
+  },
+  status: {
+    type: String,
+    enum: ['Active', 'Pending', 'Completed'],
+    default: 'Active',
+  },
 }, {
-  timestamps: true, // Automatically adds createdAt and updatedAt fields
+  timestamps: true,
 });
 
 const Gig = mongoose.model('Gig', gigSchema);
