@@ -31,7 +31,7 @@ const gigSchema = new mongoose.Schema({
   status: {
     type: String,
     enum: ['Active', 'Pending', 'Completed'],
-    default: 'Active',
+    default: 'Pending',
   },
 }, {
   timestamps: true,
