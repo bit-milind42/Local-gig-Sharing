@@ -23,7 +23,7 @@ router.get("/", getAllGigs);
 router.get("/:id", getGigById);
 router.put("/:id", updateGig);
 router.delete("/:id", deleteGig);
-ter.patch("/:id/status", updateGigStatus);
+router.patch("/:id/status", updateGigStatus);
 
 // Ensure this GET request always returns an array
 router.get("/", async (req, res) => {
@@ -64,5 +64,21 @@ router.post("/", async (req, res) => {
     res.status(500).json({ error: "Server error", details: error.message });
   }
 });
+
+router.get("/", async (req, res) => {
+  try {
+      const { userId } = req.query;
+
+      if (!userId) {
+          return res.status(400).json({ success: false, message: "User ID is required" });
+      }
+
+      const gigs = await Gig.find({ createdBy: userId }); // ✅ Only return the user's gigs
+      res.status(200).json({ success: true, gigs });
+  } catch (error) {
+      res.status(500).json({ success: false, message: "Failed to fetch gigs", error });
+  }
+});
+
 
 module.exports = router;

@@ -173,58 +173,287 @@
 
 
 
+// import { useEffect, useState } from "react";
+// import { Link, useNavigate } from "react-router-dom";
+
+// const Navbar = () => {
+//     const [user, setUser] = useState(null);
+//     const navigate = useNavigate();
+
+//     useEffect(() => {
+//         const userData = localStorage.getItem("user");
+//         if (userData) {
+//             setUser(JSON.parse(userData));
+//         }
+//     }, []);
+
+//     const handleLogout = () => {
+//         localStorage.removeItem("token");
+//         localStorage.removeItem("user");
+//         setUser(null);
+//         navigate("/"); // ✅ Redirect to homepage
+//     };
+
+//     return (
+//         <nav className="bg-blue-600 p-4 shadow-md">
+//             <div className="container mx-auto flex justify-between items-center">
+//                 {/* Logo */}
+//                 <Link to="/" className="text-white text-2xl font-bold">Local Gig Sharing</Link>
+
+//                 {/* Navigation Links */}
+//                 <ul className="flex space-x-6 text-white font-medium">
+//                     <li><Link to="/" className="hover:text-gray-300">Home</Link></li>
+//                     <li><Link to="/gigs" className="hover:text-gray-300">Gigs</Link></li>
+//                     {user ? (
+//                         <>
+//                             <li><Link to="/dashboard" className="hover:text-gray-300">Dashboard</Link></li>
+//                             <li className="font-semibold">Welcome, {user.name}</li>
+//                             <li>
+//                                 <button 
+//                                     onClick={handleLogout} 
+//                                     className="bg-red-500 px-4 py-2 rounded-lg text-white hover:bg-red-700 transition">
+//                                     Logout
+//                                 </button>
+//                             </li>
+//                         </>
+//                     ) : (
+//                         <>
+//                             <li><Link to="/login" className="hover:text-gray-300">Login</Link></li>
+//                             <li><Link to="/signup" className="hover:text-gray-300">Signup</Link></li>
+//                         </>
+//                     )}
+//                 </ul>
+//             </div>
+//         </nav>
+//     );
+// };
+
+// export default Navbar;
+
+
+
+// import { useContext } from "react";
+// import { AuthContext } from "../context/AuthContext";
+// import { Link, useNavigate } from "react-router-dom";
+
+// const Navbar = () => {
+//   const { user, setUser } = useContext(AuthContext);
+//   const navigate = useNavigate();
+
+//   const handleLogout = () => {
+//     localStorage.removeItem("user");
+//     setUser(null);
+//     navigate("/");
+//   };
+
+//   return (
+//     <nav className="w-full bg-[#A0522D] p-4 shadow-md">
+//       <div className="max-w-screen-xl mx-auto flex justify-between items-center">
+//         <Link to="/" className="text-white text-2xl font-bold">Local Gig Sharing</Link>
+//         <ul className="flex space-x-6 text-white font-medium">
+//           <li><Link to="/" className="hover:text-[#E2725B]">Home</Link></li>
+//           <li><Link to="/gigs" className="hover:text-[#E2725B]">Gigs</Link></li>
+//           {user ? (
+//             <>
+//               <li><Link to="/dashboard" className="hover:text-[#E2725B]">Dashboard</Link></li>
+//               <li>Welcome, {user.name}</li>
+//               <li><button onClick={handleLogout} className="bg-[#E2725B] px-4 py-2">Logout</button></li>
+//             </>
+//           ) : (
+//             <>
+//               <li><Link to="/login" className="hover:text-[#E2725B]">Login</Link></li>
+//               <li><Link to="/signup" className="hover:text-[#E2725B]">Signup</Link></li>
+//             </>
+//           )}
+//         </ul>
+//       </div>
+//     </nav>
+//   );
+// };
+
+// export default Navbar;
+
+
+
+// import { useEffect, useState } from "react";
+// import { Link, useNavigate } from "react-router-dom";
+
+// const Navbar = () => {
+//   const [user, setUser] = useState(null);
+//   const navigate = useNavigate();
+
+//   useEffect(() => {
+//     const storedUser = localStorage.getItem("user");
+//     if (storedUser) {
+//       setUser(JSON.parse(storedUser));
+//     }
+//   }, []);
+
+//   const handleLogout = () => {
+//     localStorage.removeItem("user");
+//     localStorage.removeItem("token");
+//     setUser(null);
+//     navigate("/");
+//   };
+
+//   return (
+//     <nav className="w-full bg-[#A0522D] p-2 shadow-md">
+//       <div className="max-w-screen-xl mx-auto flex justify-between items-center">
+//         <Link to="/" className="text-white text-lg font-bold">Local Gig Sharing</Link>
+//         <ul className="flex space-x-4 text-white font-medium">
+//           <li><Link to="/" className="hover:text-[#E2725B]">Home</Link></li>
+//           <li><Link to="/gigs" className="hover:text-[#E2725B]">Gigs</Link></li>
+//           {user ? (
+//             <>
+//               <li><Link to="/dashboard" className="hover:text-[#E2725B]">Dashboard</Link></li>
+//               <li className="text-sm">Welcome, {user.name}</li>
+//               <li>
+//                 <button 
+//                   onClick={handleLogout} 
+//                   className="bg-[#E2725B] text-sm px-3 py-1 rounded hover:bg-[#A0522D] transition">
+//                   Logout
+//                 </button>
+//               </li>
+//             </>
+//           ) : (
+//             <>
+//               <li><Link to="/login" className="hover:text-[#E2725B]">Login</Link></li>
+//               <li><Link to="/signup" className="hover:text-[#E2725B]">Signup</Link></li>
+//             </>
+//           )}
+//         </ul>
+//       </div>
+//     </nav>
+//   );
+// };
+
+// export default Navbar;
+
+
+
+
+
+
+// import { useEffect, useState } from "react";
+// import { Link, useNavigate } from "react-router-dom";
+
+// const Navbar = () => {
+//   const [user, setUser] = useState(null);
+//   const navigate = useNavigate();
+
+//   // ✅ Detect changes in localStorage and update state
+//   useEffect(() => {
+//     const checkUser = () => {
+//       const storedUser = localStorage.getItem("user");
+//       setUser(storedUser ? JSON.parse(storedUser) : null);
+//     };
+
+//     checkUser();
+
+//     // ✅ Listen for storage changes (For multiple tabs)
+//     window.addEventListener("storage", checkUser);
+//     return () => window.removeEventListener("storage", checkUser);
+//   }, []);
+
+//   const handleLogout = () => {
+//     localStorage.removeItem("user");
+//     localStorage.removeItem("token");
+//     setUser(null);
+//     navigate("/");
+//   };
+
+//   return (
+//     <nav className="w-full bg-[#A0522D] p-2 shadow-md">
+//       <div className="max-w-screen-xl mx-auto flex justify-between items-center">
+//         <Link to="/" className="text-white text-lg font-bold">Local Gig Sharing</Link>
+//         <ul className="flex space-x-4 text-white font-medium">
+//           <li><Link to="/" className="hover:text-[#E2725B]">Home</Link></li>
+//           <li><Link to="/gigs" className="hover:text-[#E2725B]">Gigs</Link></li>
+//           {user ? (
+//             <>
+//               <li><Link to="/dashboard" className="hover:text-[#E2725B]">Dashboard</Link></li>
+//               <li className="text-sm">Welcome, {user.name}</li>
+//               <li>
+//                 <button 
+//                   onClick={handleLogout} 
+//                   className="bg-[#E2725B] text-sm px-3 py-1 rounded hover:bg-[#A0522D] transition">
+//                   Logout
+//                 </button>
+//               </li>
+//             </>
+//           ) : (
+//             <>
+//               <li><Link to="/login" className="hover:text-[#E2725B]">Login</Link></li>
+//               <li><Link to="/signup" className="hover:text-[#E2725B]">Signup</Link></li>
+//             </>
+//           )}
+//         </ul>
+//       </div>
+//     </nav>
+//   );
+// };
+
+// export default Navbar;
+
+
+
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
-    const [user, setUser] = useState(null);
-    const navigate = useNavigate();
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
 
-    useEffect(() => {
-        const userData = localStorage.getItem("user");
-        if (userData) {
-            setUser(JSON.parse(userData));
-        }
-    }, []);
-
-    const handleLogout = () => {
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
-        setUser(null);
-        navigate("/"); // ✅ Redirect to homepage
+  // ✅ Check user on page load & whenever localStorage changes
+  useEffect(() => {
+    const checkUser = () => {
+      const storedUser = localStorage.getItem("user");
+      setUser(storedUser ? JSON.parse(storedUser) : null);
     };
 
-    return (
-        <nav className="bg-blue-600 p-4 shadow-md">
-            <div className="container mx-auto flex justify-between items-center">
-                {/* Logo */}
-                <Link to="/" className="text-white text-2xl font-bold">Local Gig Sharing</Link>
+    checkUser();
 
-                {/* Navigation Links */}
-                <ul className="flex space-x-6 text-white font-medium">
-                    <li><Link to="/" className="hover:text-gray-300">Home</Link></li>
-                    {user ? (
-                        <>
-                            <li><Link to="/dashboard" className="hover:text-gray-300">Dashboard</Link></li>
-                            <li className="font-semibold">Welcome, {user.name}</li>
-                            <li>
-                                <button 
-                                    onClick={handleLogout} 
-                                    className="bg-red-500 px-4 py-2 rounded-lg text-white hover:bg-red-700 transition">
-                                    Logout
-                                </button>
-                            </li>
-                        </>
-                    ) : (
-                        <>
-                            <li><Link to="/login" className="hover:text-gray-300">Login</Link></li>
-                            <li><Link to="/signup" className="hover:text-gray-300">Signup</Link></li>
-                        </>
-                    )}
-                </ul>
-            </div>
-        </nav>
-    );
+    // ✅ Listen for storage changes (works across tabs)
+    window.addEventListener("storage", checkUser);
+    return () => window.removeEventListener("storage", checkUser);
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+    setUser(null);
+    navigate("/");
+  };
+
+  return (
+    <nav className="w-full bg-[#A0522D] p-2 shadow-md">
+      <div className="max-w-screen-xl mx-auto flex justify-between items-center">
+        <Link to="/" className="text-white text-lg font-bold">Local Gig Sharing</Link>
+        <ul className="flex space-x-4 text-white font-medium">
+          <li><Link to="/" className="hover:text-[#E2725B]">Home</Link></li>
+          <li><Link to="/gigs" className="hover:text-[#E2725B]">Gigs</Link></li>
+          {user ? (
+            <>
+              <li><Link to="/dashboard" className="hover:text-[#E2725B]">Dashboard</Link></li>
+              <li className="text-sm">Welcome, {user.name}</li>
+              <li>
+                <button 
+                  onClick={handleLogout} 
+                  className="bg-[#E2725B] text-sm px-3 py-1 rounded hover:bg-[#A0522D] transition">
+                  Logout
+                </button>
+              </li>
+            </>
+          ) : (
+            <>
+              <li><Link to="/login" className="hover:text-[#E2725B]">Login</Link></li>
+              <li><Link to="/signup" className="hover:text-[#E2725B]">Signup</Link></li>
+            </>
+          )}
+        </ul>
+      </div>
+    </nav>
+  );
 };
 
 export default Navbar;
